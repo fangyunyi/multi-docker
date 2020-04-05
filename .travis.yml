@@ -3,20 +3,20 @@ services:
   - docker
 
 before_install:
-  - docker build -t fangyunyi/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t albertli1989/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run fangyunyi/react-test npm test -- --coverage
+  - docker run albertli1989/react-test npm test -- --coverage
 
 after_success:
-  - docker build -t fangyunyi/multi-client ./client
-  - docker build -t fangyunyi/multi-nginx ./nginx
-  - docker build -t fangyunyi/multi-server ./server
-  - docker build -t fangyunyi/multi-worker ./worker
+  - docker build -t albertli1989/multi-client ./client
+  - docker build -t albertli1989/multi-nginx ./nginx
+  - docker build -t albertli1989/multi-server ./server
+  - docker build -t albertli1989/multi-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push fangyunyi/multi-client
-  - docker push fangyunyi/multi-nginx
-  - docker push fangyunyi/multi-server
-  - docker push fangyunyi/multi-worker
+  - docker push albertli1989/multi-client
+  - docker push albertli1989/multi-nginx
+  - docker push albertli1989/multi-server
+  - docker push albertli1989/multi-worker
