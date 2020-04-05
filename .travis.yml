@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t fangyunyi/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run fangyunyi/react-test npm test -- -- coverage
+
+after_success:
+  - docker build -t fangyunyi/multi-client ./client
+  - docker build -t fangyunyi/multi-nginx ./nginx
+  - docker build -t fangyunyi/multi-server ./server
+  - docker build -t fangyunyi/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push fangyunyi/multi-client
+  - docker push fangyunyi/multi-nginx
+  - docker push fangyunyi/multi-server
+  - docker push fangyunyi/multi-worker
